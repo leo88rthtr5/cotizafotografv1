@@ -1,6 +1,6 @@
-/* THE KNIGHT CODE | Cotizador Fotografía v1.1
-   Modelo C Híbrido | Ubicación y Traslado
-   Vanilla ES6+ | Zero Dependencies
+/* THE KNIGHT CODE | Cotizador Fotografía v1.3
+   Paleta Pastel | Modelo C Híbrido
+   Vanilla ES6+ | Zero Dependencies | Null-safe
 */
 
 const $ = (id) => document.getElementById(id);
@@ -40,10 +40,14 @@ const state = {
   notas: ''
 };
 
-function init() {
-  $('fechaCotizacion').textContent = new Date().toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' });
+function safe(fn) {
+  try { return fn(); } catch(e) { console.warn('Safe exec failed:', e); return null; }
+}
 
-  // Duración
+function init() {
+  const fecha = $('fechaCotizacion');
+  if (fecha) fecha.textContent = new Date().toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' });
+
   document.querySelectorAll('[data-duracion]').forEach(btn => {
     btn.addEventListener('click', () => {
       state.duracion = parseInt(btn.dataset.duracion);
@@ -51,7 +55,6 @@ function init() {
     });
   });
 
-  // Tipo
   document.querySelectorAll('[data-tipo]').forEach(btn => {
     btn.addEventListener('click', () => {
       state.tipo = btn.dataset.tipo;
@@ -59,7 +62,6 @@ function init() {
     });
   });
 
-  // Extras
   document.querySelectorAll('[data-extra]').forEach(chk => {
     chk.addEventListener('change', () => {
       const key = chk.dataset.extra;
@@ -69,7 +71,6 @@ function init() {
     });
   });
 
-  // Ubicación / Traslado
   document.querySelectorAll('[data-zona]').forEach(btn => {
     btn.addEventListener('click', () => {
       state.zona = btn.dataset.zona;
@@ -77,13 +78,11 @@ function init() {
     });
   });
 
-  // Notas
-  $('notas').addEventListener('input', (e) => {
-    state.notas = e.target.value.trim();
-  });
+  const notas = $('notas');
+  if (notas) notas.addEventListener('input', (e) => { state.notas = e.target.value.trim(); });
 
-  // Copiar
-  $('btnCopiar').addEventListener('click', copiarResumen);
+  const btnCopiar = $('btnCopiar');
+  if (btnCopiar) btnCopiar.addEventListener('click', copiarResumen);
 
   updateUI();
 }
@@ -91,6 +90,7 @@ function init() {
 function calculate() {
   const dur = PRECIOS.duracion[state.duracion];
   const tipo = PRECIOS.tipo[state.tipo];
+  const trasladoData = PRECIOS.traslado[state.zona];
 
   let subtotal = dur.base * tipo.factor;
   let extrasCosto = 0;
@@ -102,12 +102,7 @@ function calculate() {
     if (ext.tipo === 'porcentaje') extrasCosto += subtotal * ext.factor;
   });
 
-  const trasladoData = PRECIOS.traslado[state.zona];
-  let trasladoCosto = 0;
-  if (trasladoData.costo !== null) {
-    trasladoCosto = trasladoData.costo;
-  }
-
+  const trasladoCosto = trasladoData.costo !== null ? trasladoData.costo : 0;
   const total = subtotal + extrasCosto + trasladoCosto;
   return { subtotal, extrasCosto, trasladoCosto, trasladoData, total, dur, tipo };
 }
@@ -115,27 +110,45 @@ function calculate() {
 function updateUI() {
   const { subtotal, extrasCosto, trasladoCosto, trasladoData, total, dur, tipo } = calculate();
 
-  // Activos
-  document.querySelectorAll('[data-duracion]').forEach(b => b.classList.toggle('active', parseInt(b.dataset.duracion) === state.duracion));
-  document.querySelectorAll('[data-tipo]').forEach(b => b.classList.toggle('active', b.dataset.tipo === state.tipo));
-  document.querySelectorAll('[data-zona]').forEach(b => b.classList.toggle('active', b.dataset.zona === state.zona));
+  // Labels de estado
+  safe(() => { $('duracionLabel').textContent = dur.label.toUpperCase(); });
+  safe(() => { $('ubicacionLabel').textContent = trasladoData.label.split('/')[0].trim().toUpperCase(); });
 
-  // Labels
-  $('duracionLabel').textContent = dur.label.toUpperCase();
-  $('tipoLabel').textContent = tipo.label.toUpperCase();
-  $('ubicacionLabel').textContent = trasladoData.label.toUpperCase();
+  // Clases activas
+  document.querySelectorAll('[data-duracion]').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.duracion) === state.duracion);
+  });
+  document.querySelectorAll('[data-tipo]').forEach(b => {
+    b.classList.toggle('active', b.dataset.tipo === state.tipo);
+  });
+  document.querySelectorAll('[data-zona]').forEach(b => {
+    b.classList.toggle('active', b.dataset.zona === state.zona);
+  });
 
   // Resumen
-  $('resDuracion').textContent = `${dur.label} × ${fmtMoney(dur.base * tipo.factor)}`;
-  $('resTipo').textContent = `${tipo.label} (×${tipo.factor})`;
-  $('resExtras').textContent = state.extras.size === 0 ? 'Ninguno' : fmtMoney(extrasCosto);
-  $('resTraslado').textContent = trasladoData.costo !== null ? fmtMoney(trasladoCosto) : 'Por confirmar';
-  $('resTotal').textContent = fmtMoney(total);
+  safe(() => {
+    $('resDuracion').textContent = `${dur.label} × ${fmtMoney(dur.base * tipo.factor)}`;
+  });
+  safe(() => {
+    $('resTipo').textContent = `${tipo.label} (×${tipo.factor})`;
+  });
+  safe(() => {
+    $('resExtras').textContent = state.extras.size === 0 ? 'Ninguno' : fmtMoney(extrasCosto);
+  });
+  safe(() => {
+    $('resTraslado').textContent = trasladoData.costo !== null ? fmtMoney(trasladoCosto) : 'Por confirmar';
+  });
+  safe(() => {
+    $('resTotal').textContent = fmtMoney(total);
+  });
 
   // WhatsApp
-  const phone = '5212381234567'; // <-- CONFIGURA AQUÍ
-  const msg = generarMensaje(total, dur, tipo, trasladoData, trasladoCosto, extrasCosto);
-  $('btnWhatsApp').href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  const btnWA = $('btnWhatsApp');
+  if (btnWA) {
+    const phone = '5212381234567'; // <-- REEMPLAZA CON EL NÚMERO REAL
+    const msg = generarMensaje(total, dur, tipo, trasladoData, trasladoCosto, extrasCosto);
+    btnWA.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  }
 }
 
 function generarMensaje(total, dur, tipo, trasladoData, trasladoCosto, extrasCosto) {
@@ -153,8 +166,7 @@ function generarMensaje(total, dur, tipo, trasladoData, trasladoCosto, extrasCos
   if (state.extras.size > 0) {
     lines.push('*Extras:*');
     state.extras.forEach(key => {
-      const e = PRECIOS.extras[key];
-      lines.push(`- ${e.label}`);
+      lines.push(`- ${PRECIOS.extras[key].label}`);
     });
   } else {
     lines.push('*Extras:* Ninguno');
@@ -175,9 +187,12 @@ function copiarResumen() {
   const text = generarMensaje(total, dur, tipo, trasladoData, trasladoCosto, extrasCosto);
   navigator.clipboard.writeText(text).then(() => {
     const btn = $('btnCopiar');
+    if (!btn) return;
     const prev = btn.textContent;
     btn.textContent = 'Copiado ✓';
     setTimeout(() => btn.textContent = prev, 1500);
+  }).catch(() => {
+    alert('No se pudo copiar. Intenta manualmente.');
   });
 }
 
