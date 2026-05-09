@@ -7,415 +7,397 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            ink: '#1c1917',
-            paper: '#fafaf9',
-            warm: '#f5f5f4',
-            accent: '#10b981',
-            muted: '#57534e'
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['Space Mono', 'monospace']
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #FDFCF8;
+      --card: #F7F3EF;
+      --ink: #3D405B;
+      --muted: #9A9590;
+      --accent: #E07A5F;
+      --accent-soft: #F2CC8F;
+      --border: #E8E4DE;
+      --shadow: rgba(61, 64, 91, 0.08);
+    }
     body {
-      background-color: #f5f5f4;
-      color: #1c1917;
+      background: var(--bg);
+      color: var(--ink);
       font-family: 'Inter', sans-serif;
     }
     .font-mono { font-family: 'Space Mono', monospace; }
-    
-    /* Textura sutil de fondo */
-    .texture-bg {
-      background-image: 
-        radial-gradient(circle at 1px 1px, rgba(28,25,23,0.04) 1px, transparent 0);
-      background-size: 24px 24px;
+
+    /* Sombra pastel suave */
+    .shadow-pastel {
+      box-shadow: 0 2px 12px var(--shadow);
+    }
+    .shadow-pastel-hover:hover {
+      box-shadow: 0 6px 24px rgba(61, 64, 91, 0.12);
     }
 
-    /* Sombras duras neobrutalistas */
-    .shadow-hard {
-      box-shadow: 4px 4px 0px #1c1917;
+    /* Cards de opción */
+    .option-pastel {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.25s ease;
     }
-    .shadow-hard-sm {
-      box-shadow: 3px 3px 0px #1c1917;
+    .option-pastel:hover:not(.active) {
+      border-color: var(--accent-soft);
+      box-shadow: 0 4px 20px rgba(61, 64, 91, 0.10);
+      transform: translateY(-2px);
     }
-    .shadow-hard-lg {
-      box-shadow: 6px 6px 0px #1c1917;
+    .option-pastel.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+      box-shadow: 0 4px 16px rgba(61, 64, 91, 0.18);
+    }
+    .option-pastel.active .pastel-muted { color: #b8b5c4; }
+    .option-pastel.active .pastel-accent { color: var(--accent-soft); }
+
+    /* Filas de extras */
+    .extra-pastel {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      transition: all 0.2s ease;
+    }
+    .extra-pastel:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 4px 16px rgba(61, 64, 91, 0.08);
+      transform: translateY(-1px);
     }
 
-    /* Botones de opción */
-    .option-card {
-      border: 2px solid #1c1917;
-      background: #fafaf9;
-      transition: all 0.12s ease;
-      position: relative;
-    }
-    .option-card:hover:not(.active) {
-      transform: translate(-2px, -2px);
-      box-shadow: 4px 4px 0px #1c1917;
-      background: #fff;
-    }
-    .option-card.active {
-      background: #1c1917;
-      color: #fafaf9;
-      box-shadow: 4px 4px 0px #10b981;
-      transform: translate(0, 0);
-    }
-    .option-card.active .text-muted { color: #a8a29e; }
-    .option-card.active .text-accent { color: #10b981; }
-
-    /* Checkboxes custom brutalistas */
-    .check-brutal {
+    /* Checkbox pastel */
+    .check-pastel {
       appearance: none;
-      width: 22px; height: 22px;
-      border: 2px solid #1c1917;
-      background: #fafaf9;
+      width: 20px; height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
       cursor: pointer;
+      transition: all 0.15s ease;
       position: relative;
-      box-shadow: 2px 2px 0px #1c1917;
-      transition: all 0.1s ease;
     }
-    .check-brutal:checked {
-      background: #1c1917;
-      border-color: #1c1917;
-      box-shadow: 2px 2px 0px #10b981;
-      transform: translate(-1px, -1px);
+    .check-pastel:checked {
+      background: var(--accent);
+      border-color: var(--accent);
     }
-    .check-brutal:checked::after {
+    .check-pastel:checked::after {
       content: "";
       position: absolute;
-      left: 6px; top: 2px;
+      left: 5px; top: 1px;
       width: 5px; height: 10px;
-      border: solid #fafaf9;
+      border: solid #fff;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
     }
 
-    /* Lista de extras */
-    .extra-row {
-      border: 2px solid #1c1917;
-      background: #fafaf9;
-      transition: all 0.1s ease;
+    /* Filas de zona */
+    .zone-pastel {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      transition: all 0.2s ease;
     }
-    .extra-row:hover {
-      background: #fff;
-      box-shadow: 4px 4px 0px #1c1917;
-      transform: translate(-2px, -2px);
+    .zone-pastel:hover:not(.active) {
+      border-color: var(--accent-soft);
+      box-shadow: 0 4px 16px rgba(61, 64, 91, 0.08);
+      transform: translateY(-1px);
     }
+    .zone-pastel.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+      box-shadow: 0 4px 16px rgba(61, 64, 91, 0.15);
+    }
+    .zone-pastel.active .pastel-muted { color: #b8b5c4; }
+    .zone-pastel.active .pastel-accent { color: var(--accent-soft); }
 
-    /* Traslado rows */
-    .zone-row {
-      border: 2px solid #1c1917;
-      background: #fafaf9;
-      transition: all 0.1s ease;
+    /* Input */
+    .input-pastel {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      transition: all 0.2s ease;
     }
-    .zone-row:hover:not(.active) {
-      transform: translate(-2px, -2px);
-      box-shadow: 4px 4px 0px #1c1917;
-      background: #fff;
-    }
-    .zone-row.active {
-      background: #1c1917;
-      color: #fafaf9;
-      box-shadow: 4px 4px 0px #10b981;
-    }
-    .zone-row.active .text-muted { color: #a8a29e; }
-
-    /* Inputs */
-    .input-brutal {
-      border: 2px solid #1c1917;
-      background: #fafaf9;
-      box-shadow: 3px 3px 0px #1c1917;
-      transition: all 0.1s ease;
-    }
-    .input-brutal:focus {
+    .input-pastel:focus {
       outline: none;
-      box-shadow: 5px 5px 0px #10b981;
-      transform: translate(-2px, -2px);
-      background: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.12);
     }
 
-    /* Botones de acción */
-    .btn-primary {
-      background: #1c1917;
-      color: #fafaf9;
-      border: 2px solid #1c1917;
-      box-shadow: 4px 4px 0px #10b981;
-      transition: all 0.1s ease;
+    /* Botones */
+    .btn-pastel {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 14px;
+      transition: all 0.2s ease;
+      font-weight: 700;
     }
-    .btn-primary:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0px #10b981;
+    .btn-pastel:hover {
+      background: #d46a50;
+      box-shadow: 0 6px 20px rgba(224, 122, 95, 0.25);
+      transform: translateY(-1px);
     }
-    .btn-primary:active {
-      transform: translate(2px, 2px);
-      box-shadow: 0px 0px 0px #10b981;
+    .btn-pastel:active {
+      transform: translateY(0);
     }
-    .btn-secondary {
+    .btn-outline-pastel {
       background: transparent;
-      color: #1c1917;
-      border: 2px solid #1c1917;
-      box-shadow: 3px 3px 0px #1c1917;
-      transition: all 0.1s ease;
+      border: 1.5px solid var(--border);
+      color: var(--ink);
+      border-radius: 14px;
+      transition: all 0.2s ease;
+      font-weight: 700;
     }
-    .btn-secondary:hover {
-      background: #1c1917;
-      color: #fafaf9;
-      transform: translate(-1px, -1px);
-      box-shadow: 4px 4px 0px #1c1917;
+    .btn-outline-pastel:hover {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
     }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #f5f5f4; }
-    ::-webkit-scrollbar-thumb { background: #1c1917; border: 1px solid #f5f5f4; }
+    /* Panel resumen */
+    .panel-resumen {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+    }
 
     /* Badge numerado */
-    .section-badge {
+    .badge-pastel {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #1c1917;
-      color: #fafaf9;
+      background: var(--accent-soft);
+      color: var(--ink);
       font-family: 'Space Mono', monospace;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      width: 28px; height: 28px;
+      width: 26px; height: 26px;
+      border-radius: 8px;
       margin-right: 10px;
-      box-shadow: 2px 2px 0px #10b981;
     }
 
-    /* Panel resumen invertido */
-    .panel-dark {
-      background: #1c1917;
-      color: #fafaf9;
-      border: 2px solid #1c1917;
-      box-shadow: -4px 4px 0px #10b981;
-    }
-    .panel-dark .text-muted { color: #a8a29e; }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   </style>
 </head>
-<body class="min-h-screen texture-bg selection:bg-accent selection:text-white">
+<body class="min-h-screen selection:bg-[#E07A5F] selection:text-white">
 
   <!-- HEADER -->
-  <header class="border-b-[3px] border-ink bg-paper px-4 md:px-8 py-5 flex items-center justify-between shadow-hard-sm">
-    <div class="flex items-center gap-3">
-      <div class="w-2 h-8 bg-accent"></div>
-      <div class="flex flex-col">
-        <span class="text-[10px] uppercase tracking-[0.35em] text-muted font-mono font-bold">The Knight Code</span>
-        <span class="text-sm font-black tracking-tight uppercase text-ink">Cotizador // Fotografía</span>
+  <header class="bg-white/60 backdrop-blur-sm border-b border-[#E8E4DE] px-5 md:px-10 py-5 sticky top-0 z-50">
+    <div class="max-w-[1400px] mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-[#E07A5F] flex items-center justify-center text-white text-xs font-bold font-mono">TK</div>
+        <div class="flex flex-col">
+          <span class="text-[10px] uppercase tracking-[0.25em] text-[#9A9590] font-mono font-bold">The Knight Code</span>
+          <span class="text-sm font-bold tracking-tight text-[#3D405B]">Cotizador Fotografía</span>
+        </div>
       </div>
+      <div class="text-[10px] text-[#9A9590] font-mono font-bold bg-[#F7F3EF] px-3 py-1.5 rounded-full">v1.3 / PASTEL</div>
     </div>
-    <div class="text-[10px] text-muted font-mono font-bold bg-ink text-paper px-2 py-1 shadow-hard-sm hidden sm:block">v1.2 / NEOBRUTAL</div>
   </header>
 
-  <main class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-80px)]">
-    
-    <!-- CONFIGURADOR (8 cols) -->
-    <section class="col-span-full lg:col-span-8 p-4 md:p-10 flex flex-col gap-10">
+  <main class="max-w-[1400px] mx-auto p-5 md:p-10 grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+
+    <!-- CONFIGURADOR (7 cols) -->
+    <section class="col-span-full lg:col-span-7 flex flex-col gap-8">
 
       <!-- DURACIÓN -->
-      <div>
+      <div class="bg-white rounded-2xl p-6 md:p-8 shadow-pastel">
         <div class="flex items-center justify-between mb-5">
           <div class="flex items-center">
-            <span class="section-badge">01</span>
-            <h2 class="text-sm font-black uppercase tracking-widest text-ink">Duración de Cobertura</h2>
+            <span class="badge-pastel">01</span>
+            <h2 class="text-sm font-bold uppercase tracking-widest text-[#3D405B]">Duración de Cobertura</h2>
           </div>
-          <span id="duracionLabel" class="text-[11px] font-mono font-bold text-muted bg-paper border-2 border-ink px-3 py-1 shadow-hard-sm">SELECCIONA</span>
+          <span id="duracionLabel" class="text-[11px] font-mono font-bold text-[#9A9590] bg-[#F7F3EF] px-3 py-1.5 rounded-lg">SELECCIONA</span>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <button data-duracion="1" class="option-card px-5 py-6 text-left">
-            <div class="text-3xl font-mono font-black leading-none">1<span class="text-base text-muted font-sans font-bold ml-1">hr</span></div>
-            <div class="text-[11px] font-bold uppercase tracking-wider text-muted mt-2">Desde $1,500</div>
+          <button data-duracion="1" class="option-pastel px-5 py-6 text-left">
+            <div class="text-2xl font-mono font-bold leading-none text-[#3D405B]">1<span class="text-sm font-sans font-normal text-[#9A9590] ml-1">hr</span></div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-[#9A9590] mt-2">Desde $1,500</div>
           </button>
-          <button data-duracion="2" class="option-card px-5 py-6 text-left">
-            <div class="text-3xl font-mono font-black leading-none">2<span class="text-base text-muted font-sans font-bold ml-1">hr</span></div>
-            <div class="text-[11px] font-bold uppercase tracking-wider text-muted mt-2">Desde $2,800</div>
+          <button data-duracion="2" class="option-pastel px-5 py-6 text-left">
+            <div class="text-2xl font-mono font-bold leading-none text-[#3D405B]">2<span class="text-sm font-sans font-normal text-[#9A9590] ml-1">hr</span></div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-[#9A9590] mt-2">Desde $2,800</div>
           </button>
-          <button data-duracion="4" class="option-card px-5 py-6 text-left">
-            <div class="text-3xl font-mono font-black leading-none">4<span class="text-base text-muted font-sans font-bold ml-1">hr</span></div>
-            <div class="text-[11px] font-bold uppercase tracking-wider text-muted mt-2">Desde $5,000</div>
+          <button data-duracion="4" class="option-pastel px-5 py-6 text-left">
+            <div class="text-2xl font-mono font-bold leading-none text-[#3D405B]">4<span class="text-sm font-sans font-normal text-[#9A9590] ml-1">hr</span></div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-[#9A9590] mt-2">Desde $5,000</div>
           </button>
-          <button data-duracion="8" class="option-card px-5 py-6 text-left">
-            <div class="text-3xl font-mono font-black leading-none">8<span class="text-base text-muted font-sans font-bold ml-1">hr</span></div>
-            <div class="text-[11px] font-bold uppercase tracking-wider text-muted mt-2">Desde $9,000</div>
+          <button data-duracion="8" class="option-pastel px-5 py-6 text-left">
+            <div class="text-2xl font-mono font-bold leading-none text-[#3D405B]">8<span class="text-sm font-sans font-normal text-[#9A9590] ml-1">hr</span></div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-[#9A9590] mt-2">Desde $9,000</div>
           </button>
         </div>
       </div>
 
       <!-- TIPO -->
-      <div>
+      <div class="bg-white rounded-2xl p-6 md:p-8 shadow-pastel">
         <div class="flex items-center mb-5">
-          <span class="section-badge">02</span>
-          <h2 class="text-sm font-black uppercase tracking-widest text-ink">Tipo de Sesión</h2>
+          <span class="badge-pastel">02</span>
+          <h2 class="text-sm font-bold uppercase tracking-widest text-[#3D405B]">Tipo de Sesión</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <button data-tipo="retrato" class="option-card active px-6 py-7 text-left">
-            <div class="text-sm font-black uppercase tracking-wide">Retrato</div>
-            <div class="text-xs text-muted mt-2 leading-relaxed font-medium">Individual, pareja o familiar en locación simple.</div>
-            <div class="text-[10px] font-mono text-accent font-bold mt-3">Factor x1.0</div>
+          <button data-tipo="retrato" class="option-pastel active px-6 py-7 text-left">
+            <div class="text-sm font-bold uppercase tracking-wide">Retrato</div>
+            <div class="text-xs pastel-muted mt-2 leading-relaxed">Individual, pareja o familiar en locación simple.</div>
+            <div class="text-[10px] font-mono pastel-accent font-bold mt-3">Factor x1.0</div>
           </button>
-          <button data-tipo="evento" class="option-card px-6 py-7 text-left">
-            <div class="text-sm font-black uppercase tracking-wide">Evento Social</div>
-            <div class="text-xs text-muted mt-2 leading-relaxed font-medium">XV años, boda, cumpleaños, corporativo.</div>
-            <div class="text-[10px] font-mono text-accent font-bold mt-3">Factor x1.3</div>
+          <button data-tipo="evento" class="option-pastel px-6 py-7 text-left">
+            <div class="text-sm font-bold uppercase tracking-wide">Evento Social</div>
+            <div class="text-xs pastel-muted mt-2 leading-relaxed">XV años, boda, cumpleaños, corporativo.</div>
+            <div class="text-[10px] font-mono pastel-accent font-bold mt-3">Factor x1.3</div>
           </button>
-          <button data-tipo="producto" class="option-card px-6 py-7 text-left">
-            <div class="text-sm font-black uppercase tracking-wide">Producto / Comercial</div>
-            <div class="text-xs text-muted mt-2 leading-relaxed font-medium">E-commerce, alimentos, arquitectura.</div>
-            <div class="text-[10px] font-mono text-accent font-bold mt-3">Factor x1.6</div>
+          <button data-tipo="producto" class="option-pastel px-6 py-7 text-left">
+            <div class="text-sm font-bold uppercase tracking-wide">Producto / Comercial</div>
+            <div class="text-xs pastel-muted mt-2 leading-relaxed">E-commerce, alimentos, arquitectura.</div>
+            <div class="text-[10px] font-mono pastel-accent font-bold mt-3">Factor x1.6</div>
           </button>
         </div>
       </div>
 
       <!-- EXTRAS -->
-      <div>
+      <div class="bg-white rounded-2xl p-6 md:p-8 shadow-pastel">
         <div class="flex items-center mb-5">
-          <span class="section-badge">03</span>
-          <h2 class="text-sm font-black uppercase tracking-widest text-ink">Extras Adicionales</h2>
+          <span class="badge-pastel">03</span>
+          <h2 class="text-sm font-bold uppercase tracking-widest text-[#3D405B]">Extras Adicionales</h2>
         </div>
         <div class="space-y-3">
-          <label class="extra-row flex items-start gap-5 px-6 py-6 cursor-pointer">
-            <input type="checkbox" data-extra="segundo" class="check-brutal mt-1 flex-shrink-0">
+          <label class="extra-pastel flex items-start gap-4 px-6 py-5 cursor-pointer">
+            <input type="checkbox" data-extra="segundo" class="check-pastel mt-1 flex-shrink-0">
             <div class="flex-1">
-              <div class="text-sm font-bold text-ink">Segundo Fotógrafo</div>
-              <div class="text-xs text-muted mt-1 font-medium leading-relaxed">Cobertura de ángulos simultáneos. Ideal para eventos.</div>
+              <div class="text-sm font-semibold text-[#3D405B]">Segundo Fotógrafo</div>
+              <div class="text-xs text-[#9A9590] mt-0.5 leading-relaxed">Cobertura de ángulos simultáneos. Ideal para eventos.</div>
             </div>
-            <div class="font-mono text-sm font-black text-ink">+$1,500</div>
+            <div class="font-mono text-sm font-bold text-[#E07A5F]">+$1,500</div>
           </label>
-          <label class="extra-row flex items-start gap-5 px-6 py-6 cursor-pointer">
-            <input type="checkbox" data-extra="edicion" class="check-brutal mt-1 flex-shrink-0">
+          <label class="extra-pastel flex items-start gap-4 px-6 py-5 cursor-pointer">
+            <input type="checkbox" data-extra="edicion" class="check-pastel mt-1 flex-shrink-0">
             <div class="flex-1">
-              <div class="text-sm font-bold text-ink">Edición Avanzada por Imagen</div>
-              <div class="text-xs text-muted mt-1 font-medium leading-relaxed">Retoque de piel, color grading cinematográfico, limpieza de fondo.</div>
+              <div class="text-sm font-semibold text-[#3D405B]">Edición Avanzada por Imagen</div>
+              <div class="text-xs text-[#9A9590] mt-0.5 leading-relaxed">Retoque de piel, color grading cinematográfico, limpieza de fondo.</div>
             </div>
-            <div class="font-mono text-sm font-black text-ink">+$120 <span class="text-[10px] text-muted font-normal">/ img</span></div>
+            <div class="font-mono text-sm font-bold text-[#E07A5F]">+$120 <span class="text-[10px] text-[#9A9590] font-normal">/ img</span></div>
           </label>
-          <label class="extra-row flex items-start gap-5 px-6 py-6 cursor-pointer">
-            <input type="checkbox" data-extra="express" class="check-brutal mt-1 flex-shrink-0">
+          <label class="extra-pastel flex items-start gap-4 px-6 py-5 cursor-pointer">
+            <input type="checkbox" data-extra="express" class="check-pastel mt-1 flex-shrink-0">
             <div class="flex-1">
-              <div class="text-sm font-bold text-ink">Entrega Express 24h</div>
-              <div class="text-xs text-muted mt-1 font-medium leading-relaxed">Prioridad total en post-producción. Entrega garantizada al día siguiente.</div>
+              <div class="text-sm font-semibold text-[#3D405B]">Entrega Express 24h</div>
+              <div class="text-xs text-[#9A9590] mt-0.5 leading-relaxed">Prioridad total en post-producción. Entrega garantizada al día siguiente.</div>
             </div>
-            <div class="font-mono text-sm font-black text-ink">+25%</div>
+            <div class="font-mono text-sm font-bold text-[#E07A5F]">+25%</div>
           </label>
         </div>
       </div>
 
-      <!-- UBICACIÓN / TRASLADO -->
-      <div>
+      <!-- UBICACIÓN -->
+      <div class="bg-white rounded-2xl p-6 md:p-8 shadow-pastel">
         <div class="flex items-center justify-between mb-5">
           <div class="flex items-center">
-            <span class="section-badge">04</span>
-            <h2 class="text-sm font-black uppercase tracking-widest text-ink">Ubicación y Traslado</h2>
+            <span class="badge-pastel">04</span>
+            <h2 class="text-sm font-bold uppercase tracking-widest text-[#3D405B]">Ubicación y Traslado</h2>
           </div>
-          <span id="ubicacionLabel" class="text-[11px] font-mono font-bold text-muted bg-paper border-2 border-ink px-3 py-1 shadow-hard-sm">ESTUDIO</span>
+          <span id="ubicacionLabel" class="text-[11px] font-mono font-bold text-[#9A9590] bg-[#F7F3EF] px-3 py-1.5 rounded-lg">ESTUDIO</span>
         </div>
         <div class="space-y-3">
-          <button data-zona="centro" class="zone-row active w-full text-left px-6 py-5 flex justify-between items-start gap-4">
+          <button data-zona="centro" class="zone-pastel active w-full text-left px-6 py-5 flex justify-between items-start gap-4">
             <div>
-              <div class="text-sm font-black">Estudio / Tehuacán Centro</div>
-              <div class="text-xs text-muted mt-1 font-medium">El cliente acude al espacio de trabajo del fotógrafo.</div>
+              <div class="text-sm font-bold">Estudio / Tehuacán Centro</div>
+              <div class="text-xs pastel-muted mt-0.5">El cliente acude al espacio de trabajo del fotógrafo.</div>
             </div>
-            <div class="font-mono text-sm font-black text-accent whitespace-nowrap">Incluido</div>
+            <div class="font-mono text-sm font-bold pastel-accent whitespace-nowrap">Incluido</div>
           </button>
-          <button data-zona="tehuacan" class="zone-row w-full text-left px-6 py-5 flex justify-between items-start gap-4">
+          <button data-zona="tehuacan" class="zone-pastel w-full text-left px-6 py-5 flex justify-between items-start gap-4">
             <div>
-              <div class="text-sm font-black">Dentro de Tehuacán</div>
-              <div class="text-xs text-muted mt-1 font-medium">Col. Carranza, Xolalpa, San Lorenzo, El Riego, etc.</div>
+              <div class="text-sm font-bold">Dentro de Tehuacán</div>
+              <div class="text-xs text-[#9A9590] mt-0.5">Col. Carranza, Xolalpa, San Lorenzo, El Riego, etc.</div>
             </div>
-            <div class="font-mono text-sm font-black whitespace-nowrap">+$150</div>
+            <div class="font-mono text-sm font-bold text-[#3D405B] whitespace-nowrap">+$150</div>
           </button>
-          <button data-zona="conurbada" class="zone-row w-full text-left px-6 py-5 flex justify-between items-start gap-4">
+          <button data-zona="conurbada" class="zone-pastel w-full text-left px-6 py-5 flex justify-between items-start gap-4">
             <div>
-              <div class="text-sm font-black">Zona Conurbada</div>
-              <div class="text-xs text-muted mt-1 font-medium">San Diego Chalma, San Sebastián, Altepexi, Ajalpan cercano.</div>
+              <div class="text-sm font-bold">Zona Conurbada</div>
+              <div class="text-xs text-[#9A9590] mt-0.5">San Diego Chalma, San Sebastián, Altepexi, Ajalpan cercano.</div>
             </div>
-            <div class="font-mono text-sm font-black whitespace-nowrap">+$400</div>
+            <div class="font-mono text-sm font-bold text-[#3D405B] whitespace-nowrap">+$400</div>
           </button>
-          <button data-zona="intermedia" class="zone-row w-full text-left px-6 py-5 flex justify-between items-start gap-4">
+          <button data-zona="intermedia" class="zone-pastel w-full text-left px-6 py-5 flex justify-between items-start gap-4">
             <div>
-              <div class="text-sm font-black">Ciudad Intermedia</div>
-              <div class="text-xs text-muted mt-1 font-medium">Puebla capital, Orizaba, Teziutlán, Huajuapan.</div>
+              <div class="text-sm font-bold">Ciudad Intermedia</div>
+              <div class="text-xs text-[#9A9590] mt-0.5">Puebla capital, Orizaba, Teziutlán, Huajuapan.</div>
             </div>
-            <div class="font-mono text-sm font-black whitespace-nowrap">+$800</div>
+            <div class="font-mono text-sm font-bold text-[#3D405B] whitespace-nowrap">+$800</div>
           </button>
-          <button data-zona="otra" class="zone-row w-full text-left px-6 py-5 flex justify-between items-start gap-4">
+          <button data-zona="otra" class="zone-pastel w-full text-left px-6 py-5 flex justify-between items-start gap-4">
             <div>
-              <div class="text-sm font-black">Otra locación / No estoy seguro</div>
-              <div class="text-xs text-muted mt-1 font-medium">El fotógrafo confirma traslado vía WhatsApp tras revisar dirección.</div>
+              <div class="text-sm font-bold">Otra locación / No estoy seguro</div>
+              <div class="text-xs text-[#9A9590] mt-0.5">El fotógrafo confirma traslado vía WhatsApp tras revisar dirección.</div>
             </div>
-            <div class="font-mono text-sm font-black whitespace-nowrap">Cotizar</div>
+            <div class="font-mono text-sm font-bold text-[#3D405B] whitespace-nowrap">Cotizar</div>
           </button>
         </div>
       </div>
 
       <!-- NOTAS -->
-      <div>
+      <div class="bg-white rounded-2xl p-6 md:p-8 shadow-pastel">
         <div class="flex items-center mb-4">
-          <span class="section-badge">05</span>
-          <label class="text-sm font-black uppercase tracking-widest text-ink">Notas del Cliente</label>
+          <span class="badge-pastel">05</span>
+          <label class="text-sm font-bold uppercase tracking-widest text-[#3D405B]">Notas del Cliente</label>
         </div>
-        <textarea id="notas" rows="4" class="input-brutal w-full p-5 text-sm font-medium text-ink resize-none placeholder:text-muted" placeholder="Describe fechas tentativas, colonia exacta o requerimientos especiales..."></textarea>
+        <textarea id="notas" rows="4" class="input-pastel w-full p-5 text-sm text-[#3D405B] resize-none placeholder:text-[#9A9590]" placeholder="Describe fechas tentativas, colonia exacta o requerimientos especiales..."></textarea>
       </div>
 
     </section>
 
-    <!-- RESUMEN INVERTIDO (4 cols) -->
-    <aside class="col-span-full lg:col-span-4 p-4 md:p-10 lg:bg-ink/5 lg:border-l-[3px] lg:border-ink flex flex-col">
-      <div class="panel-dark p-6 md:p-8 flex-1 flex flex-col">
-        <div class="flex items-center gap-3 mb-8">
-          <div class="w-1.5 h-8 bg-accent"></div>
-          <h3 class="text-sm font-black uppercase tracking-widest">Resumen</h3>
+    <!-- RESUMEN (5 cols) -->
+    <aside class="col-span-full lg:col-span-5">
+      <div class="lg:sticky lg:top-24 panel-resumen p-6 md:p-8 flex flex-col gap-6 shadow-pastel">
+        <div class="flex items-center gap-3">
+          <div class="w-1 h-8 rounded-full bg-[#E07A5F]"></div>
+          <h3 class="text-sm font-bold uppercase tracking-widest text-[#3D405B]">Resumen</h3>
         </div>
 
-        <div class="space-y-4 font-mono text-xs flex-1">
-          <div class="flex justify-between items-baseline py-3 border-b border-white/10">
-            <span class="text-muted font-bold">Duración Base</span>
-            <span id="resDuracion" class="text-paper font-bold text-sm">--</span>
+        <div class="space-y-3 font-mono text-xs">
+          <div class="flex justify-between items-baseline py-3 border-b border-[#E8E4DE]">
+            <span class="text-[#9A9590] font-semibold">Duración Base</span>
+            <span id="resDuracion" class="text-[#3D405B] font-bold text-sm">--</span>
           </div>
-          <div class="flex justify-between items-baseline py-3 border-b border-white/10">
-            <span class="text-muted font-bold">Tipo de Sesión</span>
-            <span id="resTipo" class="text-paper font-bold">--</span>
+          <div class="flex justify-between items-baseline py-3 border-b border-[#E8E4DE]">
+            <span class="text-[#9A9590] font-semibold">Tipo de Sesión</span>
+            <span id="resTipo" class="text-[#3D405B] font-bold">--</span>
           </div>
-          <div class="flex justify-between items-baseline py-3 border-b border-white/10">
-            <span class="text-muted font-bold">Extras</span>
-            <span id="resExtras" class="text-paper font-bold">--</span>
+          <div class="flex justify-between items-baseline py-3 border-b border-[#E8E4DE]">
+            <span class="text-[#9A9590] font-semibold">Extras</span>
+            <span id="resExtras" class="text-[#3D405B] font-bold">--</span>
           </div>
-          <div class="flex justify-between items-baseline py-3 border-b border-white/10">
-            <span class="text-muted font-bold">Traslado</span>
-            <span id="resTraslado" class="text-paper font-bold">--</span>
+          <div class="flex justify-between items-baseline py-3 border-b border-[#E8E4DE]">
+            <span class="text-[#9A9590] font-semibold">Traslado</span>
+            <span id="resTraslado" class="text-[#3D405B] font-bold">--</span>
           </div>
-          <div class="flex justify-between items-baseline py-5 border-b-2 border-accent">
-            <span class="font-black text-paper uppercase tracking-wider text-sm">Total Estimado</span>
-            <span id="resTotal" class="font-black text-paper text-xl">$0 MXN</span>
+          <div class="flex justify-between items-baseline py-5 border-b-2 border-[#E07A5F]">
+            <span class="font-black text-[#3D405B] uppercase tracking-wider text-sm">Total Estimado</span>
+            <span id="resTotal" class="font-black text-[#E07A5F] text-2xl">$0 MXN</span>
           </div>
         </div>
 
-        <div class="space-y-3 mt-8">
-          <a id="btnWhatsApp" href="#" target="_blank" class="btn-primary block w-full text-center py-4 text-xs font-black uppercase tracking-widest">
+        <div class="space-y-3 mt-2">
+          <a id="btnWhatsApp" href="#" target="_blank" class="btn-pastel block w-full text-center py-4 text-xs uppercase tracking-widest">
             Enviar por WhatsApp
           </a>
-          <button id="btnCopiar" class="btn-secondary block w-full text-center py-3.5 text-[10px] font-black uppercase tracking-widest border-paper text-paper">
+          <button id="btnCopiar" class="btn-outline-pastel block w-full text-center py-3.5 text-[10px] uppercase tracking-widest">
             Copiar Resumen
           </button>
         </div>
 
-        <div class="mt-8 pt-6 border-t border-white/10">
-          <p class="text-[10px] text-muted leading-relaxed font-medium">
+        <div class="mt-2 pt-5 border-t border-[#E8E4DE]">
+          <p class="text-[10px] text-[#9A9590] leading-relaxed">
             Los precios son estimados y pueden variar según logística, traslado y requerimientos específicos de iluminación. La cotización final se confirma vía WhatsApp.
           </p>
-          <p class="text-[10px] text-muted mt-4 font-mono font-bold">Generado: <span id="fechaCotizacion">--</span></p>
+          <p class="text-[10px] text-[#9A9590] mt-3 font-mono font-bold">Generado: <span id="fechaCotizacion">--</span></p>
         </div>
       </div>
     </aside>
