@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>THE KNIGHT CODE | Cotizador Fotografía</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#fafaf9',
+            ink: '#1c1917',
+            muted: '#78716c',
+            line: '#e7e5e4',
+            accent: '#10b981'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Space Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #fafaf9; color: #1c1917; font-family: 'Inter', sans-serif; }
+    .font-mono { font-family: 'Space Mono', monospace; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #fafaf9; }
+    ::-webkit-scrollbar-thumb { background: #d6d3d1; }
+    .option-btn {
+      border: 1px solid #e7e5e4;
+      background: transparent;
+      transition: all 0.15s ease;
+    }
+    .option-btn.active {
+      background: #1c1917;
+      border-color: #1c1917;
+      color: #fafaf9;
+    }
+    .check-box {
+      appearance: none;
+      width: 18px; height: 18px;
+      border: 1px solid #a8a29e;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+    }
+    .check-box:checked {
+      background: #1c1917;
+      border-color: #1c1917;
+    }
+    .check-box:checked::after {
+      content: "✓";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fafaf9;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body class="min-h-screen selection:bg-accent selection:text-white">
+
+  <header class="border-b border-line px-4 md:px-8 py-4 flex items-center justify-between">
+    <div class="flex flex-col">
+      <span class="text-[10px] uppercase tracking-[0.3em] text-muted font-mono">The Knight Code</span>
+      <span class="text-xs font-bold tracking-tight uppercase">Cotizador // Fotografía</span>
+    </div>
+    <div class="text-[10px] text-muted font-mono hidden sm:block">v1.1 / HÍBRIDO</div>
+  </header>
+
+  <main class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-65px)]">
+    
+    <!-- CONFIGURADOR (8 cols) -->
+    <section class="col-span-full lg:col-span-8 p-4 md:p-8 lg:border-r border-line flex flex-col gap-10">
+
+      <!-- DURACIÓN -->
+      <div>
+        <div class="flex items-baseline justify-between mb-4">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-muted">01 // Duración de Cobertura</h2>
+          <span id="duracionLabel" class="text-[10px] font-mono text-muted">SELECCIONA</span>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <button data-duracion="1" class="option-btn px-4 py-5 text-left">
+            <div class="text-2xl font-mono font-bold">1<span class="text-sm text-muted font-normal ml-1">hr</span></div>
+            <div class="text-[10px] uppercase tracking-wider text-muted mt-1">Desde $1,500</div>
+          </button>
+          <button data-duracion="2" class="option-btn px-4 py-5 text-left">
+            <div class="text-2xl font-mono font-bold">2<span class="text-sm text-muted font-normal ml-1">hr</span></div>
+            <div class="text-[10px] uppercase tracking-wider text-muted mt-1">Desde $2,800</div>
+          </button>
+          <button data-duracion="4" class="option-btn px-4 py-5 text-left">
+            <div class="text-2xl font-mono font-bold">4<span class="text-sm text-muted font-normal ml-1">hr</span></div>
+            <div class="text-[10px] uppercase tracking-wider text-muted mt-1">Desde $5,000</div>
+          </button>
+          <button data-duracion="8" class="option-btn px-4 py-5 text-left">
+            <div class="text-2xl font-mono font-bold">8<span class="text-sm text-muted font-normal ml-1">hr</span></div>
+            <div class="text-[10px] uppercase tracking-wider text-muted mt-1">Desde $9,000</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- TIPO DE SESIÓN -->
+      <div>
+        <div class="flex items-baseline justify-between mb-4">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-muted">02 // Tipo de Sesión</h2>
+          <span id="tipoLabel" class="text-[10px] font-mono text-muted">RETRATO POR DEFECTO</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-line">
+          <button data-tipo="retrato" class="option-btn active border-0 border-r border-line px-5 py-6 text-left">
+            <div class="text-sm font-bold uppercase tracking-wide">Retrato</div>
+            <div class="text-xs text-muted mt-2 leading-relaxed">Individual, pareja o familiar en locación simple.</div>
+            <div class="text-[10px] font-mono text-accent mt-3">Factor x1.0</div>
+          </button>
+          <button data-tipo="evento" class="option-btn border-0 border-r border-line px-5 py-6 text-left">
+            <div class="text-sm font-bold uppercase tracking-wide">Evento Social</div>
+            <div class="text-xs text-muted mt-2 leading-relaxed">XV años, boda, cumpleaños, corporativo.</div>
+            <div class="text-[10px] font-mono text-accent mt-3">Factor x1.3</div>
+          </button>
+          <button data-tipo="producto" class="option-btn border-0 px-5 py-6 text-left">
+            <div class="text-sm font-bold uppercase tracking-wide">Producto / Comercial</div>
+            <div class="text-xs text-muted mt-2 leading-relaxed">E-commerce, alimentos, arquitectura.</div>
+            <div class="text-[10px] font-mono text-accent mt-3">Factor x1.6</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- EXTRAS -->
+      <div>
+        <div class="flex items-baseline justify-between mb-4">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-muted">03 // Extras Adicionales</h2>
+        </div>
+        <div class="space-y-0 border border-line">
+          <label class="flex items-start gap-4 px-5 py-5 border-b border-line cursor-pointer hover:bg-stone-100 transition-colors">
+            <input type="checkbox" data-extra="segundo" class="check-box mt-0.5">
+            <div class="flex-1">
+              <div class="text-sm font-bold">Segundo Fotógrafo</div>
+              <div class="text-xs text-muted mt-1">Cobertura de ángulos simultáneos. Ideal para eventos.</div>
+            </div>
+            <div class="font-mono text-sm font-bold">+$1,500</div>
+          </label>
+          <label class="flex items-start gap-4 px-5 py-5 border-b border-line cursor-pointer hover:bg-stone-100 transition-colors">
+            <input type="checkbox" data-extra="edicion" class="check-box mt-0.5">
+            <div class="flex-1">
+              <div class="text-sm font-bold">Edición Avanzada por Imagen</div>
+              <div class="text-xs text-muted mt-1">Retoque de piel, color grading cinematográfico, limpieza de fondo.</div>
+            </div>
+            <div class="font-mono text-sm font-bold">+$120 <span class="text-[10px] text-muted font-normal">/ img</span></div>
+          </label>
+          <label class="flex items-start gap-4 px-5 py-5 cursor-pointer hover:bg-stone-100 transition-colors">
+            <input type="checkbox" data-extra="express" class="check-box mt-0.5">
+            <div class="flex-1">
+              <div class="text-sm font-bold">Entrega Express 24h</div>
+              <div class="text-xs text-muted mt-1">Prioridad total en post-producción. Entrega garantizada al día siguiente.</div>
+            </div>
+            <div class="font-mono text-sm font-bold">+25%</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- UBICACIÓN / TRASLADO -->
+      <div>
+        <div class="flex items-baseline justify-between mb-4">
+          <h2 class="text-xs font-bold uppercase tracking-widest text-muted">04 // Ubicación y Traslado</h2>
+          <span id="ubicacionLabel" class="text-[10px] font-mono text-muted">ESTUDIO POR DEFECTO</span>
+        </div>
+        <div class="border border-line">
+          <button data-zona="centro" class="option-btn active w-full text-left px-5 py-4 border-b border-line flex justify-between items-start gap-3">
+            <div>
+              <div class="text-sm font-bold">Estudio / Tehuacán Centro</div>
+              <div class="text-xs text-muted mt-0.5">El cliente acude al espacio de trabajo del fotógrafo.</div>
+            </div>
+            <div class="font-mono text-sm font-bold text-accent whitespace-nowrap">Incluido</div>
+          </button>
+          <button data-zona="tehuacan" class="option-btn w-full text-left px-5 py-4 border-b border-line flex justify-between items-start gap-3">
+            <div>
+              <div class="text-sm font-bold">Dentro de Tehuacán</div>
+              <div class="text-xs text-muted mt-0.5">Col. Carranza, Xolalpa, San Lorenzo, El Riego, etc.</div>
+            </div>
+            <div class="font-mono text-sm font-bold whitespace-nowrap">+$150</div>
+          </button>
+          <button data-zona="conurbada" class="option-btn w-full text-left px-5 py-4 border-b border-line flex justify-between items-start gap-3">
+            <div>
+              <div class="text-sm font-bold">Zona Conurbada</div>
+              <div class="text-xs text-muted mt-0.5">San Diego Chalma, San Sebastián, Altepexi, Ajalpan cercano.</div>
+            </div>
+            <div class="font-mono text-sm font-bold whitespace-nowrap">+$400</div>
+          </button>
+          <button data-zona="intermedia" class="option-btn w-full text-left px-5 py-4 border-b border-line flex justify-between items-start gap-3">
+            <div>
+              <div class="text-sm font-bold">Ciudad Intermedia</div>
+              <div class="text-xs text-muted mt-0.5">Puebla capital, Orizaba, Teziutlán, Huajuapan.</div>
+            </div>
+            <div class="font-mono text-sm font-bold whitespace-nowrap">+$800</div>
+          </button>
+          <button data-zona="otra" class="option-btn w-full text-left px-5 py-4 flex justify-between items-start gap-3">
+            <div>
+              <div class="text-sm font-bold">Otra locación / No estoy seguro</div>
+              <div class="text-xs text-muted mt-0.5">El fotógrafo confirma traslado vía WhatsApp tras revisar dirección.</div>
+            </div>
+            <div class="font-mono text-sm font-bold whitespace-nowrap">Cotizar</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- NOTAS -->
+      <div class="pt-4">
+        <label class="text-xs font-bold uppercase tracking-widest text-muted block mb-2">05 // Notas del Cliente</label>
+        <textarea id="notas" rows="3" class="w-full bg-transparent border border-line p-4 text-sm focus:outline-none focus:border-ink resize-none placeholder:text-stone-400" placeholder="Describe fechas tentativas, colonia exacta o requerimientos especiales..."></textarea>
+      </div>
+
+    </section>
+
+    <!-- RESUMEN (4 cols) -->
+    <aside class="col-span-full lg:col-span-4 bg-stone-100/50 p-4 md:p-8 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
+      <h3 class="text-xs font-bold uppercase tracking-widest text-muted mb-8">Resumen de Cotización</h3>
+
+      <div class="space-y-4 font-mono text-xs mb-8">
+        <div class="flex justify-between py-2 border-b border-line/60">
+          <span class="text-muted">Duración Base</span>
+          <span id="resDuracion" class="text-ink">--</span>
+        </div>
+        <div class="flex justify-between py-2 border-b border-line/60">
+          <span class="text-muted">Tipo de Sesión</span>
+          <span id="resTipo" class="text-ink">--</span>
+        </div>
+        <div class="flex justify-between py-2 border-b border-line/60">
+          <span class="text-muted">Extras</span>
+          <span id="resExtras" class="text-ink">--</span>
+        </div>
+        <div class="flex justify-between py-2 border-b border-line/60">
+          <span class="text-muted">Traslado</span>
+          <span id="resTraslado" class="text-ink">--</span>
+        </div>
+        <div class="flex justify-between py-3 border-b-2 border-ink">
+          <span class="font-bold text-ink uppercase tracking-wider">Total Estimado</span>
+          <span id="resTotal" class="font-bold text-ink text-lg">$0 MXN</span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <a id="btnWhatsApp" href="#" target="_blank" class="block w-full bg-ink text-paper text-center py-4 text-xs font-bold uppercase tracking-widest hover:bg-accent hover:text-white transition-colors border border-transparent">
+          Enviar por WhatsApp
+        </a>
+        <button id="btnCopiar" class="block w-full bg-transparent text-ink text-center py-3 text-[10px] font-bold uppercase tracking-widest border border-ink hover:bg-ink hover:text-paper transition-colors">
+          Copiar Resumen
+        </button>
+      </div>
+
+      <div class="mt-10 pt-6 border-t border-line">
+        <p class="text-[10px] text-muted leading-relaxed">
+          Los precios son estimados y pueden variar según logística, traslado y requerimientos específicos de iluminación. La cotización final se confirma vía WhatsApp.
+        </p>
+        <p class="text-[10px] text-muted mt-4 font-mono">Cotización generada: <span id="fechaCotizacion">--</span></p>
+      </div>
+    </aside>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
